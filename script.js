@@ -1,24 +1,22 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
-var currentDate = moment().format('dddd, MMM YYYY');
-$("#currentDay").html(currentDate);
 
-(function () {
+//Date and time for the planner
+var currentDate = $("#currentDay");
+currentDate.text (moment().format('dddd, MMM Do YYYY'));
 
-  $(".saveBtn").on("click", function () {
+//The current hour
+var currentHour = moment().hour();
 
-    var text = $(this).siblings(".description").val();
-    var time = $(this).parent().attr("id");
 
-    localStorage.setItem(time, text);
-  })
-  function timeOfDay () {
 
-    var currentTime = moment().hour();
+//add save button click event
+$(".saveBtn").on("click", function() {
+  var inputKey = $(this).parent().att("id").split("-")[1];
 
-    
+  var inputVal = $(this).parent().find(".description").val();
 
-  }
+  localStorage.setItem(inputKey, inputVal);
 })
 
