@@ -4,19 +4,27 @@
 
 //Date and time for the planner
 var currentDate = $("#currentDay");
-currentDate.text (moment().format('dddd, MMM Do YYYY'));
 
-//The current hour
-var currentHour = moment().hour();
-
-
+function showDate () {
+  var currentTime = () => {
+    //setting the format date and time will displayed in
+    var time = dayjs().format("dddd, MMM D YYYY");
+    currentDate.text(time);
+  }
+  currentTime();
+  setInterval(currentTime, 1000);
+}
+showDate();
 
 //add save button click event
-$(".saveBtn").on("click", function() {
-  var inputKey = $(this).parent().att("id").split("-")[1];
+var scheduledEvents = $('.saveBtn');
 
-  var inputVal = $(this).parent().find(".description").val();
+scheduledEvents.click(function() {
+  Event.preventDefault();
+  var hour = $(this).parent('div').attr('id');
+  var value = $('#' + hour, '' + value);
+  localStorage.setItem('#' + hour, '' + value);
+ 
+});
 
-  localStorage.setItem(inputKey, inputVal);
-})
 
