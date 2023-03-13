@@ -1,30 +1,36 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-
-//Date and time for the planner
-var currentDate = $("#currentDay");
-
-function showDate () {
-  var currentTime = () => {
-    //setting the format date and time will displayed in
-    var time = dayjs().format("dddd, MMM D YYYY");
-    currentDate.text(time);
-  }
-  currentTime();
-  setInterval(currentTime, 1000);
+// display the current time of day
+var timeDisplay = $('#currentDay');
+function showTime() {
+  var currentTime = dayjs().format('dddd, MMMM D, YYYY');
+  timeDisplay.text(currentTime);
 }
-showDate();
+showTime();
 
-//add save button click event
-var scheduledEvents = $('.saveBtn');
+// save button click event
+$('.saveBtn').on('click', function() {
+  var save = $(this).parent().attr('id').split('-')[1];
 
-scheduledEvents.click(function() {
-  Event.preventDefault();
-  var hour = $(this).parent('div').attr('id');
-  var value = $('#' + hour, '' + value);
-  localStorage.setItem('#' + hour, '' + value);
- 
+  var description = $(this).parent().find('.description').val();
+
+  localStorage.setItem(save,description);
 });
 
+// applying style boxes to the boxes to reflect if past, present, or future
+$(".time-block").each(function() {
+  var scheduleHour = $(this).attr('id').split('-')[1];
 
+  var scheduledInputs = localStorage.getItem(scheduleHour);
+  var inputArea = $(this).find('.description');
+  inputArea.val (scheduledInputs);
+
+  if (scheduleHour < showTime) {
+    $(this).find('.description').addClass('past');
+
+  } else if (scheduleHour === showTime) {
+    $(this).find('.description').addClass('present');
+
+  } else {
+    $(this).find('.description').addClass('future');
+
+  }
+});
